@@ -92,7 +92,6 @@ const ScreenRecorder: React.FC = () => {
   const handleSaveRecording = () => {
     if (!videoData) return;
     
-    // In a browser context, trigger download
     const a = document.createElement('a');
     a.href = videoData.url;
     a.download = `screen-recording-${new Date().toISOString().slice(0, 19).replace(/:/g, '-')}.webm`;
@@ -122,8 +121,6 @@ const ScreenRecorder: React.FC = () => {
   const handleAreaSelected = (area: { x: number; y: number; width: number; height: number }) => {
     setIsAreaSelectionActive(false);
     
-    // In a real app, this would use native APIs to capture a specific screen area
-    // For this demo, we'll just simulate it by capturing the entire screen
     const options: RecordingOptions = {
       audio: audioEnabled,
       video: {
@@ -203,23 +200,21 @@ const ScreenRecorder: React.FC = () => {
 
   return (
     <>
-      <div className="fixed bottom-8 right-8 z-40 shadow-2xl">
-        <RecordingControls
-          isRecording={isRecording}
-          isPaused={isPaused}
-          audioEnabled={audioEnabled}
-          onStartRecording={handleSelectArea} // Default to area selection
-          onPauseRecording={handlePauseRecording}
-          onResumeRecording={handleResumeRecording}
-          onStopRecording={handleStopRecording}
-          onSelectArea={handleSelectArea}
-          onSelectWindow={handleSelectWindow}
-          onSelectFullScreen={handleSelectFullScreen}
-          onToggleAudio={handleToggleAudio}
-          onZoomIn={handleZoomIn}
-          recordingTime={recordingTime}
-        />
-      </div>
+      <RecordingControls
+        isRecording={isRecording}
+        isPaused={isPaused}
+        audioEnabled={audioEnabled}
+        onStartRecording={handleSelectArea}
+        onPauseRecording={handlePauseRecording}
+        onResumeRecording={handleResumeRecording}
+        onStopRecording={handleStopRecording}
+        onSelectArea={handleSelectArea}
+        onSelectWindow={handleSelectWindow}
+        onSelectFullScreen={handleSelectFullScreen}
+        onToggleAudio={handleToggleAudio}
+        onZoomIn={handleZoomIn}
+        recordingTime={recordingTime}
+      />
 
       <AreaSelector
         isActive={isAreaSelectionActive}

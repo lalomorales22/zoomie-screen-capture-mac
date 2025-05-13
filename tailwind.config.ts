@@ -54,12 +54,12 @@ export default {
 					foreground: 'hsl(var(--card-foreground))'
 				},
 				recorder: {
-					DEFAULT: '#1e1e2e',
-					foreground: '#f8f8f2',
-					accent: '#ff79c6',
-					highlight: '#8be9fd',
-					control: '#50fa7b',
-					danger: '#ff5555'
+					DEFAULT: '#0f172a',
+					foreground: '#f8fafc',
+					accent: '#3b82f6',
+					highlight: '#38bdf8',
+					control: '#0ea5e9',
+					danger: '#ef4444'
 				},
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
