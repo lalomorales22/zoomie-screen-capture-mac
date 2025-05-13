@@ -1,4 +1,5 @@
 # Screen Capture / Video Editor / Sound Creator / Thing
+![Screenshot 2025-05-13 at 12 10 26 PM](https://github.com/user-attachments/assets/f5cd6032-2777-4231-9e6e-5605635ccc42)
 
 **Use your preferred IDE**
 
