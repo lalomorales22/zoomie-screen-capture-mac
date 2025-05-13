@@ -34,6 +34,13 @@
     --ring: 224.3 76.3% 48%;
 
     --radius: 0.75rem;
+    
+    --recorder: 222.2 84% 4.9%;
+    --recorder-foreground: 210 40% 98%;
+    --recorder-highlight: 217.2 91.2% 59.8%;
+    --recorder-control: 217.2 91.2% 59.8%;
+    --recorder-accent: 217.2 91.2% 49.8%;
+    --recorder-danger: 0 72.2% 50.6%;
   }
 }
 
@@ -89,4 +96,31 @@
 
 .glass-card {
   @apply backdrop-blur-md bg-black/40 border border-accent/20 rounded-xl;
+}
+
+.app-window {
+  @apply bg-black/80;
+  box-shadow: 0 20px 70px rgba(0, 0, 0, 0.5), 
+              0 10px 20px rgba(0, 0, 0, 0.5),
+              0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+}
+
+.window-titlebar {
+  background: rgba(30, 30, 40, 0.7);
+}
+
+@keyframes pulse-recording {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.animate-pulse-recording {
+  animation: pulse-recording 1.2s infinite;
 }
