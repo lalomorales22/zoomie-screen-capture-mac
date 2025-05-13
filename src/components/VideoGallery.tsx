@@ -1,9 +1,10 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Play, Edit2, Trash2, Star, BarChart2, FileText } from 'lucide-react';
+import { Play, Edit2, Trash2, Star, BarChart2, FileText, LayoutGrid, LayoutList, Share2 } from 'lucide-react';
+import { AspectRatio } from '@/components/ui/aspect-ratio';
 
 // Mock data
 const mockVideos = [
@@ -16,11 +17,31 @@ const mockVideos = [
 ];
 
 const VideoGallery = () => {
+  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+  
   return (
     <div className="space-y-6 w-full">
       <div className="flex items-center justify-between">
         <h2 className="text-2xl blue-gradient-text">Video Gallery</h2>
         <div className="flex items-center space-x-4">
+          <div className="flex bg-muted/30 rounded-md p-1">
+            <Button 
+              size="icon" 
+              variant={viewMode === 'grid' ? "default" : "ghost"}
+              className={viewMode === 'grid' ? "bg-accent" : ""}
+              onClick={() => setViewMode('grid')}
+            >
+              <LayoutGrid className="h-4 w-4" />
+            </Button>
+            <Button 
+              size="icon" 
+              variant={viewMode === 'list' ? "default" : "ghost"}
+              className={viewMode === 'list' ? "bg-accent" : ""}
+              onClick={() => setViewMode('list')}
+            >
+              <LayoutList className="h-4 w-4" />
+            </Button>
+          </div>
           <Button variant="outline" className="bg-muted/30 border-accent/30">
             Import
           </Button>
@@ -39,25 +60,41 @@ const VideoGallery = () => {
         </TabsList>
         
         <TabsContent value="all" className="mt-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className={viewMode === 'grid' 
+            ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" 
+            : "flex flex-col gap-2"
+          }>
             {mockVideos.map((video) => (
-              <VideoCard key={video.id} video={video} />
+              viewMode === 'grid' 
+                ? <VideoCard key={video.id} video={video} /> 
+                : <VideoListItem key={video.id} video={video} />
             ))}
           </div>
         </TabsContent>
         
+        {/* Apply the same structure to other tabs content */}
         <TabsContent value="recent" className="mt-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className={viewMode === 'grid' 
+            ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" 
+            : "flex flex-col gap-2"
+          }>
             {mockVideos.slice(0, 3).map((video) => (
-              <VideoCard key={video.id} video={video} />
+              viewMode === 'grid' 
+                ? <VideoCard key={video.id} video={video} /> 
+                : <VideoListItem key={video.id} video={video} />
             ))}
           </div>
         </TabsContent>
         
         <TabsContent value="favorites" className="mt-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className={viewMode === 'grid' 
+            ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" 
+            : "flex flex-col gap-2"
+          }>
             {mockVideos.filter(v => v.rating >= 4).map((video) => (
-              <VideoCard key={video.id} video={video} />
+              viewMode === 'grid' 
+                ? <VideoCard key={video.id} video={video} /> 
+                : <VideoListItem key={video.id} video={video} />
             ))}
           </div>
         </TabsContent>
@@ -75,9 +112,14 @@ const VideoGallery = () => {
               </Button>
             ))}
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className={viewMode === 'grid' 
+            ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" 
+            : "flex flex-col gap-2"
+          }>
             {mockVideos.map((video) => (
-              <VideoCard key={video.id} video={video} />
+              viewMode === 'grid' 
+                ? <VideoCard key={video.id} video={video} /> 
+                : <VideoListItem key={video.id} video={video} />
             ))}
           </div>
         </TabsContent>
@@ -130,6 +172,9 @@ const VideoCard: React.FC<VideoCardProps> = ({ video }) => {
         </div>
         <div className="flex space-x-1">
           <Button size="icon" variant="ghost" className="h-7 w-7 text-muted-foreground hover:text-white">
+            <Share2 className="h-3.5 w-3.5" />
+          </Button>
+          <Button size="icon" variant="ghost" className="h-7 w-7 text-muted-foreground hover:text-white">
             <Edit2 className="h-3.5 w-3.5" />
           </Button>
           <Button size="icon" variant="ghost" className="h-7 w-7 text-muted-foreground hover:text-white">
@@ -137,6 +182,56 @@ const VideoCard: React.FC<VideoCardProps> = ({ video }) => {
           </Button>
         </div>
       </CardFooter>
+    </Card>
+  );
+};
+
+const VideoListItem: React.FC<VideoCardProps> = ({ video }) => {
+  return (
+    <Card className="glass-card overflow-hidden">
+      <div className="flex">
+        <div className="w-48 relative">
+          <AspectRatio ratio={16/9} className="bg-black flex items-center justify-center">
+            <Play className="h-8 w-8 text-accent/80" />
+            <div className="absolute bottom-2 right-2 text-xs bg-black/60 px-2 py-1 rounded text-white">
+              {video.duration}
+            </div>
+          </AspectRatio>
+        </div>
+        
+        <div className="flex-1 p-3 flex flex-col justify-between">
+          <div>
+            <h3 className="font-medium">{video.title}</h3>
+            <div className="flex justify-between items-center text-sm text-muted-foreground mt-1">
+              <span>{video.date}</span>
+              <span className="px-2 py-0.5 bg-accent/20 text-accent rounded-full text-xs">{video.category}</span>
+            </div>
+          </div>
+          
+          <div className="flex justify-between items-center mt-2">
+            <div className="flex space-x-0.5">
+              {Array(5).fill(0).map((_, i) => (
+                <Star 
+                  key={i} 
+                  size={12} 
+                  className={i < video.rating ? "text-yellow-500 fill-yellow-500" : "text-gray-500"}
+                />
+              ))}
+            </div>
+            <div className="flex space-x-1">
+              <Button size="icon" variant="ghost" className="h-6 w-6 text-muted-foreground hover:text-white">
+                <Share2 className="h-3 w-3" />
+              </Button>
+              <Button size="icon" variant="ghost" className="h-6 w-6 text-muted-foreground hover:text-white">
+                <Edit2 className="h-3 w-3" />
+              </Button>
+              <Button size="icon" variant="ghost" className="h-6 w-6 text-muted-foreground hover:text-white">
+                <Trash2 className="h-3 w-3" />
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
     </Card>
   );
 };

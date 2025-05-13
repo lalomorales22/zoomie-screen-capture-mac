@@ -6,6 +6,7 @@ import { Minimize2 } from "lucide-react";
 import ScreenRecorder from '@/components/ScreenRecorder';
 import VideoGallery from '@/components/VideoGallery';
 import VideoEditor from '@/components/VideoEditor';
+import VideoCreator from '@/components/VideoCreator';
 import Dashboard from '@/components/Dashboard';
 import DraggableWidget from '@/components/DraggableWidget';
 
@@ -34,6 +35,7 @@ const Index = () => {
             <TabsList className="bg-muted/30 w-fit mb-6">
               <TabsTrigger value="gallery">Gallery</TabsTrigger>
               <TabsTrigger value="editor">Video Editor</TabsTrigger>
+              <TabsTrigger value="creator">Video Creator</TabsTrigger>
               <TabsTrigger value="dashboard">Analytics</TabsTrigger>
             </TabsList>
             
@@ -43,6 +45,10 @@ const Index = () => {
             
             <TabsContent value="editor" className="mt-0">
               <VideoEditor />
+            </TabsContent>
+            
+            <TabsContent value="creator" className="mt-0">
+              <VideoCreator />
             </TabsContent>
             
             <TabsContent value="dashboard" className="mt-0">

@@ -1,8 +1,9 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { 
   Scissors, 
   Volume2, 
@@ -15,10 +16,41 @@ import {
   Crop,
   Video,
   Mic,
-  Text
+  Text,
+  Image,
+  Share,
+  Twitter
 } from 'lucide-react';
+import { useToast } from "@/hooks/use-toast";
+import { AspectRatio } from '@/components/ui/aspect-ratio';
+
+// Mock data for gallery
+const mockClips = [
+  { id: 1, title: 'Intro', duration: '00:15', thumbnail: 'bg-blue-900/20' },
+  { id: 2, title: 'Demo', duration: '01:45', thumbnail: 'bg-green-900/20' },
+  { id: 3, title: 'Conclusion', duration: '00:30', thumbnail: 'bg-purple-900/20' },
+  { id: 4, title: 'Interview Clip', duration: '02:10', thumbnail: 'bg-red-900/20' },
+];
 
 const VideoEditor = () => {
+  const { toast } = useToast();
+  const [activeTab, setActiveTab] = useState("tools");
+  
+  const handleShare = () => {
+    toast({
+      title: "Sharing to X",
+      description: "Preparing your video to share on X (Twitter)...",
+    });
+    
+    // Mock share action
+    setTimeout(() => {
+      toast({
+        title: "Share ready",
+        description: "Your video is ready to share on X (Twitter)",
+      });
+    }, 1500);
+  };
+  
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
@@ -31,6 +63,10 @@ const VideoEditor = () => {
           <Button className="bg-accent hover:bg-accent/90">
             <Download className="mr-2 h-4 w-4" />
             Export
+          </Button>
+          <Button onClick={handleShare} variant="outline" className="border-accent/30">
+            <Twitter className="mr-2 h-4 w-4" />
+            Share to X
           </Button>
         </div>
       </div>
@@ -88,67 +124,106 @@ const VideoEditor = () => {
         </div>
         
         <div className="lg:col-span-2 space-y-4">
-          <Card className="glass-card p-4">
-            <h3 className="text-lg font-medium mb-4">Tools</h3>
-            <div className="grid grid-cols-3 gap-2">
-              <Button variant="outline" className="flex-col h-20 border-accent/30">
-                <Crop className="h-5 w-5 mb-1" />
-                <span className="text-xs">Crop</span>
-              </Button>
-              <Button variant="outline" className="flex-col h-20 border-accent/30">
-                <Scissors className="h-5 w-5 mb-1" />
-                <span className="text-xs">Trim</span>
-              </Button>
-              <Button variant="outline" className="flex-col h-20 border-accent/30">
-                <Text className="h-5 w-5 mb-1" />
-                <span className="text-xs">Text</span>
-              </Button>
-              <Button variant="outline" className="flex-col h-20 border-accent/30">
-                <Video className="h-5 w-5 mb-1" />
-                <span className="text-xs">Effects</span>
-              </Button>
-              <Button variant="outline" className="flex-col h-20 border-accent/30">
-                <Mic className="h-5 w-5 mb-1" />
-                <span className="text-xs">Audio</span>
-              </Button>
-              <Button variant="outline" className="flex-col h-20 border-accent/30">
-                <Volume2 className="h-5 w-5 mb-1" />
-                <span className="text-xs">Volume</span>
-              </Button>
-            </div>
-          </Card>
-          
-          <Card className="glass-card p-4">
-            <h3 className="text-lg font-medium mb-4">Properties</h3>
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <label className="text-sm text-gray-400">Resolution</label>
-                <div className="flex gap-2">
-                  <Button variant="outline" size="sm" className="bg-accent text-white">1080p</Button>
-                  <Button variant="outline" size="sm" className="border-accent/30">720p</Button>
-                  <Button variant="outline" size="sm" className="border-accent/30">480p</Button>
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+            <TabsList className="bg-muted/30 w-full grid grid-cols-2">
+              <TabsTrigger value="tools">Tools</TabsTrigger>
+              <TabsTrigger value="gallery">Clips Gallery</TabsTrigger>
+            </TabsList>
+            
+            <TabsContent value="tools" className="mt-4 space-y-4">
+              <Card className="glass-card p-4">
+                <h3 className="text-lg font-medium mb-4">Tools</h3>
+                <div className="grid grid-cols-3 gap-2">
+                  <Button variant="outline" className="flex-col h-20 border-accent/30">
+                    <Crop className="h-5 w-5 mb-1" />
+                    <span className="text-xs">Crop</span>
+                  </Button>
+                  <Button variant="outline" className="flex-col h-20 border-accent/30">
+                    <Scissors className="h-5 w-5 mb-1" />
+                    <span className="text-xs">Trim</span>
+                  </Button>
+                  <Button variant="outline" className="flex-col h-20 border-accent/30">
+                    <Text className="h-5 w-5 mb-1" />
+                    <span className="text-xs">Text</span>
+                  </Button>
+                  <Button variant="outline" className="flex-col h-20 border-accent/30">
+                    <Video className="h-5 w-5 mb-1" />
+                    <span className="text-xs">Effects</span>
+                  </Button>
+                  <Button variant="outline" className="flex-col h-20 border-accent/30">
+                    <Mic className="h-5 w-5 mb-1" />
+                    <span className="text-xs">Audio</span>
+                  </Button>
+                  <Button variant="outline" className="flex-col h-20 border-accent/30">
+                    <Volume2 className="h-5 w-5 mb-1" />
+                    <span className="text-xs">Volume</span>
+                  </Button>
                 </div>
-              </div>
+              </Card>
               
-              <div className="space-y-2">
-                <label className="text-sm text-gray-400">Format</label>
-                <div className="flex gap-2">
-                  <Button variant="outline" size="sm" className="bg-accent text-white">MP4</Button>
-                  <Button variant="outline" size="sm" className="border-accent/30">WebM</Button>
-                  <Button variant="outline" size="sm" className="border-accent/30">GIF</Button>
+              <Card className="glass-card p-4">
+                <h3 className="text-lg font-medium mb-4">Properties</h3>
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <label className="text-sm text-gray-400">Resolution</label>
+                    <div className="flex gap-2">
+                      <Button variant="outline" size="sm" className="bg-accent text-white">1080p</Button>
+                      <Button variant="outline" size="sm" className="border-accent/30">720p</Button>
+                      <Button variant="outline" size="sm" className="border-accent/30">480p</Button>
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <label className="text-sm text-gray-400">Format</label>
+                    <div className="flex gap-2">
+                      <Button variant="outline" size="sm" className="bg-accent text-white">MP4</Button>
+                      <Button variant="outline" size="sm" className="border-accent/30">WebM</Button>
+                      <Button variant="outline" size="sm" className="border-accent/30">GIF</Button>
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <label className="text-sm text-gray-400">Quality</label>
+                    <div className="flex gap-2">
+                      <Button variant="outline" size="sm" className="bg-accent text-white">High</Button>
+                      <Button variant="outline" size="sm" className="border-accent/30">Medium</Button>
+                      <Button variant="outline" size="sm" className="border-accent/30">Low</Button>
+                    </div>
+                  </div>
                 </div>
-              </div>
-              
-              <div className="space-y-2">
-                <label className="text-sm text-gray-400">Quality</label>
-                <div className="flex gap-2">
-                  <Button variant="outline" size="sm" className="bg-accent text-white">High</Button>
-                  <Button variant="outline" size="sm" className="border-accent/30">Medium</Button>
-                  <Button variant="outline" size="sm" className="border-accent/30">Low</Button>
+              </Card>
+            </TabsContent>
+            
+            <TabsContent value="gallery" className="mt-4">
+              <Card className="glass-card p-4">
+                <div className="flex justify-between items-center mb-4">
+                  <h3 className="text-lg font-medium">Project Clips</h3>
+                  <Button size="sm" variant="outline" className="border-accent/30">
+                    <Image className="mr-2 h-4 w-4" />
+                    Import
+                  </Button>
                 </div>
-              </div>
-            </div>
-          </Card>
+                <div className="grid grid-cols-2 gap-3">
+                  {mockClips.map((clip) => (
+                    <div key={clip.id} className="glass-card border-accent/10 p-2 rounded-lg cursor-pointer hover:border-accent/30 transition-colors">
+                      <AspectRatio ratio={16/9} className={`${clip.thumbnail} rounded-md mb-2 flex items-center justify-center`}>
+                        <Play className="h-6 w-6 text-white/80" />
+                      </AspectRatio>
+                      <div className="flex justify-between items-center">
+                        <span className="text-xs font-medium">{clip.title}</span>
+                        <span className="text-xs text-gray-400">{clip.duration}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <div className="mt-4 text-center">
+                  <Button size="sm" variant="outline" className="border-accent/30 w-full">
+                    Load More Clips
+                  </Button>
+                </div>
+              </Card>
+            </TabsContent>
+          </Tabs>
         </div>
       </div>
     </div>
